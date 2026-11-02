@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0a0f14">
+  <meta name="description" content="EvoLab 人工生命进化实验室：观察生命体在二维培养皿中觅食、遗传、变异与演化。">
+  <title>EvoLab · 人工生命进化实验室</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="js/simulation.js" defer></script>
+  <script src="js/renderer.js" defer></script>
+  <script src="js/app.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="./index.html" aria-label="EvoLab 首页">
+      <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 3 35 11.5v17L20 37 5 28.5v-17Z"/><path d="m20 10 9 5v10l-9 5-9-5V15Z"/><circle cx="20" cy="20" r="3"/></svg>
+      <span>Evo<span class="brand-accent">Lab</span></span>
+      <span class="brand-divider"></span>
+      <span class="brand-description">人工生命实验室</span>
+    </a>
+    <div class="header-right"><span class="workspace-label">实验工作台</span><span class="version">V 1.0</span><span class="header-status"><span id="status-dot" class="status-dot"></span><span id="status-label">实验运行中</span></span></div>
+  </header>
+
+  <main class="workspace">
+    <section class="page-heading" aria-labelledby="page-title">
+      <div><div class="eyebrow"><span class="eyebrow-line"></span>ARTIFICIAL LIFE · EVOLUTION SIMULATOR</div><h1 id="page-title">人工生命进化实验室<span class="heading-dot">.</span></h1><p>让生命自己寻找答案。观察觅食、遗传与变异如何塑造生命。</p></div>
+      <div class="experiment-tag"><span class="tag-icon">⌘</span><div><span class="meta-label">当前实验种子</span><span id="seed-label" class="mono">EVOLAB-2026</span></div></div>
+    </section>
+
+    <section class="metrics" aria-label="种群实时统计">
+      <article class="metric-card population-card"><div class="metric-top"><span>存活种群</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20v-3a6 6 0 0 1 12 0v3M16 5a3 3 0 0 1 0 6M17 14a5 5 0 0 1 4 5v1"/></svg></div><div class="metric-number"><strong id="population">30</strong><span>个生命体</span></div><span class="metric-caption"><span class="tiny-dot"></span>实时种群数量</span></article>
+      <article class="metric-card"><div class="metric-top"><span>平均速度</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 4-8 9h6l-2 7 8-10h-6Z"/></svg></div><div class="metric-number"><strong id="avg-speed">—</strong><span>px / s</span></div><span class="metric-caption">更快探索 · 更多能耗</span></article>
+      <article class="metric-card"><div class="metric-top"><span>平均感知范围</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg></div><div class="metric-number"><strong id="avg-sense">—</strong><span>px</span></div><span class="metric-caption">更远感知 · 更高维持成本</span></article>
+      <article class="metric-card"><div class="metric-top"><span>平均体型</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="7"/><path d="M4 7V4h3M17 4h3v3M20 17v3h-3M7 20H4v-3"/></svg></div><div class="metric-number"><strong id="avg-size">—</strong><span>px 半径</span></div><span class="metric-caption">更多储能 · 更高基础代谢</span></article>
+    </section>
+
+    <div class="experiment-grid">
+      <section class="panel petri-panel" aria-labelledby="dish-title">
+        <div class="panel-header dish-header"><div class="panel-title"><span class="section-index">01</span><h2 id="dish-title">生命培养皿</h2><span class="subtle-badge">LIVE</span></div><div class="time-label"><span>模拟时间</span><span id="sim-time" class="mono">00:00</span></div></div>
+        <div class="dish-toolbar"><div class="playback"><button id="toggle-run" class="button button-primary" type="button" aria-pressed="false"><span aria-hidden="true">Ⅱ</span> 暂停</button><div class="speed-control" role="group" aria-label="模拟速度"><button type="button" data-speed="1" class="active" aria-pressed="true">1×</button><button type="button" data-speed="2" aria-pressed="false">2×</button><button type="button" data-speed="5" aria-pressed="false">5×</button></div><button id="reset" class="button button-quiet reset-button" type="button" title="使用当前控制项重新开始实验"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4.4 6.4A6.5 6.5 0 1 1 3.5 10M4 2v5h5"/></svg><span>重置</span></button></div><label class="toggle-label" for="show-sense"><input id="show-sense" type="checkbox"><span class="toggle-track" aria-hidden="true"></span>感知范围</label></div>
+        <div class="dish-viewport"><canvas id="dish" width="1000" height="640" tabindex="0" aria-label="生命培养皿：点击生命体，或聚焦后按左右方向键选择个体，查看属性。">浏览器需要支持 Canvas 才能显示培养皿。</canvas><div class="viewport-label"><span class="crosshair-icon">+</span> PETRI DISH / 1000 × 640</div><div id="extinction-notice" class="extinction-notice" hidden><span class="extinction-icon">∅</span><strong>本次种群已灭绝</strong><p>试着增加食物供给，再开始一次实验。</p></div></div>
+        <div class="dish-footer"><div class="legend"><span><i class="legend-organism"></i>生命体</span><span><i class="legend-food"></i>营养颗粒</span><span class="legend-note">颜色随速度变化</span></div><span class="selection-hint"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m3 2 9 6-4 1-2 4Z"/></svg>点击或用方向键观察个体</span></div>
+      </section>
+
+      <aside class="sidebar" aria-label="实验设置与个体观察">
+        <section class="panel control-panel" aria-labelledby="control-title"><div class="panel-header"><div class="panel-title"><span class="section-index">02</span><h2 id="control-title">实验参数</h2></div><svg class="panel-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5h14M3 10h14M3 15h14"/><circle cx="7" cy="5" r="2"/><circle cx="13" cy="10" r="2"/><circle cx="8" cy="15" r="2"/></svg></div>
+          <div class="control-content"><div class="control-group-label"><span class="tiny-dot"></span>环境参数<span>实时生效</span></div>
+            <div class="field"><div class="field-label"><label for="food-rate">食物生成速度</label><div><output for="food-rate" id="food-rate-value">8</output><span class="field-unit"> 个 / s</span></div></div><input id="food-rate" type="range" min="0" max="30" step="1" value="8"><div class="range-bounds"><span>贫瘠 · 0</span><span>30 · 丰饶</span></div></div>
+            <div class="field"><div class="field-label"><label for="mutation-rate">基因变异概率</label><div><output for="mutation-rate" id="mutation-rate-value">15</output><span class="field-unit"> %</span></div></div><input id="mutation-rate" type="range" min="0" max="100" step="1" value="15"><div class="range-bounds"><span>稳定 · 0%</span><span>100% · 多样</span></div></div>
+            <div class="control-divider"></div><div class="control-group-label reset-group"><span class="hollow-dot"></span>初始条件<span>重置后生效</span></div>
+            <div class="field"><div class="field-label"><label for="initial-population">初始种群数量</label><div><output for="initial-population" id="initial-population-value">30</output><span class="field-unit"> 个</span></div></div><input id="initial-population" type="range" min="1" max="150" step="1" value="30"><div class="range-bounds"><span>1</span><span>150</span></div></div>
+            <div class="field seed-field"><div class="field-label"><label for="seed">随机种子</label><span class="field-tag">可复现</span></div><div class="seed-input-wrap"><span aria-hidden="true">#</span><input id="seed" type="text" value="EVOLAB-2026" maxlength="64" spellcheck="false" autocomplete="off" aria-describedby="seed-help"></div><p id="seed-help" class="field-help">同一种子与参数，重现同一段演化。</p></div>
+            <p id="pending-notice" class="pending-notice" hidden>初始条件已修改，重置后将应用。</p><button id="apply-reset" class="button button-apply" type="button">应用并重新开始<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5"/></svg></button>
+          </div>
+        </section>
+        <section class="panel inspector-panel" aria-labelledby="inspector-title"><div class="panel-header"><div class="panel-title"><span class="section-index">03</span><h2 id="inspector-title">个体观察</h2></div><span class="live-label">INSPECTOR</span></div><div id="inspector" class="inspector-content"><svg class="inspector-placeholder" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="10"/><circle cx="20" cy="20" r="3"/><path d="M20 2v8M20 30v8M2 20h8M30 20h8"/></svg><p>选择一个生命体</p><span>点击培养皿或用左右方向键选择</span></div></section>
+      </aside>
+    </div>
+
+    <div class="analysis-grid"><section class="panel chart-panel" aria-labelledby="chart-title"><div class="panel-header"><div class="panel-title"><span class="section-index">04</span><h2 id="chart-title">种群演化曲线</h2></div><div class="chart-meta"><span><i class="tiny-dot"></i>存活种群</span><span id="chart-range">最近 600 秒</span></div></div><div class="chart-wrap"><canvas id="population-chart" width="1000" height="210" aria-label="种群数量随模拟时间变化的曲线，实时数量显示于上方统计卡。">浏览器需要支持 Canvas 才能显示种群曲线。</canvas></div></section>
+      <section class="panel summary-panel" aria-labelledby="summary-title"><div class="panel-header"><div class="panel-title"><span class="section-index">05</span><h2 id="summary-title">演化概况</h2></div></div><div class="summary-grid"><div><span>累计诞生</span><strong id="total-births">0</strong></div><div><span>累计死亡</span><strong id="total-deaths">0</strong></div><div><span>最高世代</span><strong id="max-generation">1</strong></div><div><span>现存食物</span><strong id="food-count">0</strong></div></div><p class="summary-note">有限的资源，让每一次适应都有意义。</p></section>
+    </div>
+
+    <details class="rules-panel"><summary><span><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="M10 9v5M10 6v1"/></svg>这个世界如何运转？</span><span class="rules-summary-hint">查看模拟规则 <span class="disclosure-arrow">⌄</span></span></summary><div class="rules-content"><p>生命体感知附近的食物，移动、存活与感知持续消耗能量。进食补充能量，达到成熟年龄和繁殖能量阈值后无性繁殖；能量耗尽或达到寿命上限时死亡。</p><div class="rule-columns"><div><strong>速度</strong><p>移动更快，更容易抵达食物；运动能耗随速度增加。</p></div><div><strong>感知</strong><p>视野更广，能发现更远的食物；感知系统的维持成本更高。</p></div><div><strong>体型</strong><p>更大的摄食半径和储能上限；维持身体需要更多基础能量。</p></div></div><p>后代继承亲代的三个特征，每个特征独立按设定概率发生小幅变异。种群最多 300 个、食物最多 600 个。模拟使用固定时间步长；加速改变推进速率，种子与操作序列相同时结果可复现。</p></div></details>
+    <footer class="page-footer"><span><span class="footer-dot"></span>EvoLab <span class="footer-divider">/</span> 一个关于生存与变化的微观实验</span><span>浏览器本地模拟 · 无需联网</span></footer>
+  </main>
+  <div id="notification" class="sr-only" role="status" aria-live="polite"></div>
+  <noscript><div class="noscript">请启用 JavaScript 以运行 EvoLab 模拟实验。</div></noscript>
+</body>
+</html>

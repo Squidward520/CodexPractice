@@ -1,0 +1,15 @@
+{
+  "name": "evolab",
+  "version": "1.0.0",
+  "private": true,
+  "description": "EvoLab 人工生命进化实验室：确定性的浏览器二维生态模拟",
+  "scripts": {
+    "start": "node scripts/serve.cjs",
+    "test": "node tests/simulation.test.js",
+    "check": "node scripts/check.cjs",
+    "build": "node scripts/build.cjs",
+    "test:browser": "node scripts/browser-test.cjs"
+  },
+  "engines": { "node": ">=20" },
+  "devDependencies": { "playwright": "1.62.1" }
+}
